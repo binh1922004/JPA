@@ -33,7 +33,7 @@
     </style>
 </head>
 <body>
-<a href="<c:url value="/admin/category/add"/>">Add <category></category></a>
+<a href="<c:url value="/admin/video/add"/>"><b>Add video</b></a>
 <table>
     <tr>
         <th>STT</th>
