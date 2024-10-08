@@ -1,10 +1,7 @@
 package services.imp;
 
-import dao.ICategoryDao;
 import dao.IVideoDao;
-import dao.imp.CategoryDao;
 import dao.imp.VideoDao;
-import entity.Category;
 import entity.Video;
 import services.IVideoService;
 
@@ -28,7 +25,7 @@ public class VideoServiceImpl implements services.IVideoService {
         }
 
         @Override
-        public Video findById(int videoid){
+        public Video findById(String videoid){
                 return videoDao.findById(videoid);
         }
 

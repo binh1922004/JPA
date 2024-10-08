@@ -11,7 +11,7 @@ public interface IVideoService {
 
         void delete(String videoid) throws Exception;
 
-        Video findById(int videoid);
+        Video findById(String videoid);
 
         List<Video> findAll();
         List<Video> findByCategoryId(int categoryid);

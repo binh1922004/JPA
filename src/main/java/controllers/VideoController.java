@@ -16,7 +16,8 @@ import services.imp.VideoServiceImpl;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet({"/admin/videos", "/admin/video/add", "/admin/video/insert", "/admin/video/delete"})
+@WebServlet({"/admin/videos", "/admin/video/add", "/admin/video/insert", "/admin/video/delete",
+"/admin/video/edit", "/admin/video/update"})
 public class VideoController extends HttpServlet {
         IVideoService videoService = new VideoServiceImpl();
 
@@ -49,6 +50,12 @@ public class VideoController extends HttpServlet {
                 }
                 else if (url.contains("delete")){
                         doPost(req, resp);
+                }
+                else if (url.contains("edit")){
+                        String videoId = req.getParameter("videoid");
+                        Video video = videoService.findById(videoId);
+                        req.setAttribute("video", video);
+                        req.getRequestDispatcher("/view/admin/video/video-edit.jsp").forward(req, resp);
                 }
         }
 
@@ -94,6 +101,31 @@ public class VideoController extends HttpServlet {
                         } catch (Exception e) {
                                 throw new RuntimeException(e);
                         }
+                        resp.sendRedirect(req.getContextPath() + "/admin/videos");
+                }
+                else if (url.contains("update")){
+                        HttpSession session = req.getSession();
+
+                        Video video = new Video();
+                        int categoryId = (int) session.getAttribute("categoryId");
+                        String videoId = req.getParameter("videoId");
+                        String title = req.getParameter("title");
+                        String poster = req.getParameter("poster");
+                        String description = req.getParameter("description");
+                        int views = Integer.parseInt(req.getParameter("views"));
+                        int active = Integer.parseInt(req.getParameter("active"));
+
+
+                        video.setVideoId(videoId);
+                        video.setViews(views);
+                        video.setPoster(poster);
+                        video.setTitle(title);
+                        video.setActive(active);
+                        video.setDescription(description);
+                        video.setCategory(categoryService.findById(categoryId));
+
+                        videoService.update(video);
+
                         resp.sendRedirect(req.getContextPath() + "/admin/videos");
                 }
 

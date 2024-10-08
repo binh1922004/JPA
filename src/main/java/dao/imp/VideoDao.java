@@ -75,7 +75,7 @@ public class VideoDao implements dao.IVideoDao {
         }
 
         @Override
-        public Video findById(int videoid) {
+        public Video findById(String videoid) {
                 EntityManager enma = JPAConfig.getEntityManager();
                 Video video = enma.find(Video.class, videoid);
                 return video;
