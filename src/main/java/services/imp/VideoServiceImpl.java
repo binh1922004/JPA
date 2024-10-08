@@ -1,8 +1,12 @@
 package services.imp;
 
+import dao.ICategoryDao;
 import dao.IVideoDao;
+import dao.imp.CategoryDao;
 import dao.imp.VideoDao;
+import entity.Category;
 import entity.Video;
+import services.IVideoService;
 
 import java.util.List;
 
@@ -32,6 +36,9 @@ public class VideoServiceImpl implements services.IVideoService {
         public List<Video> findAll(){
                 return videoDao.findAll();
         }
+        public List<Video> findByCategoryId(int categoryid){
+                return videoDao.findByCategoryId(categoryid);
+        }
 
         @Override
         public List<Video> findByVideoTilte(String title){
@@ -46,5 +53,10 @@ public class VideoServiceImpl implements services.IVideoService {
         @Override
         public int count(){
                 return videoDao.count();
+        }
+
+        public static void main(String[] args) {
+                IVideoService videoService = new VideoServiceImpl();
+                System.out.println(videoService.findByCategoryId(1));
         }
 }

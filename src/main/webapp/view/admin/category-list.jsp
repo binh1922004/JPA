@@ -30,7 +30,9 @@
             <td>${cate.categoryname}</td>
             <td>${cate.status}</td>
             <td><a href="<c:url value='/admin/category/edit?id=${cate.categoryID}'/>" class="center">Sửa</a>
-                | <a href="<c:url value='/admin/category/delete?id=${cate.categoryID}'/>" class="center">Xóa</a></td>
+                <a href="<c:url value='/admin/category/delete?id=${cate.categoryID}'/>" class="center">Xóa</a>
+                <a href="<c:url value='/admin/videos?id=${cate.categoryID}'/>" class="center">Xem danh sách video</a>
+            </td>
         </tr>
     </c:forEach>
 </table>

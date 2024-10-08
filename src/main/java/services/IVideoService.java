@@ -14,6 +14,7 @@ public interface IVideoService {
         Video findById(int videoid);
 
         List<Video> findAll();
+        List<Video> findByCategoryId(int categoryid);
 
         List<Video> findByVideoTilte(String title);
 

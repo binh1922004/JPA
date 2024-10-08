@@ -1,7 +1,6 @@
 package dao.imp;
 
 import config.JPAConfig;
-import entity.Category;
 import entity.Video;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -88,6 +87,14 @@ public class VideoDao implements dao.IVideoDao {
                 TypedQuery<Video> query= enma.createNamedQuery("Video.findAll", Video.class);
                 return query.getResultList();
         }
+
+        @Override
+        public List<Video> findByCategoryId(int categoryid) {
+                EntityManager enma = JPAConfig.getEntityManager();
+                String jpql = "SELECT v FROM Video v WHERE v.category.categoryID = :categoryid";
+                TypedQuery<Video> query= enma.createQuery(jpql, Video.class);
+                query.setParameter("categoryid", categoryid);
+                return query.getResultList();        }
 
         @Override
         public List<Video> findByVideoTilte(String title) {
