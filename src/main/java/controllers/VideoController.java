@@ -165,7 +165,6 @@ public class VideoController extends HttpServlet {
 
                         video.setVideoId(videoId);
                         video.setViews(views);
-                        video.setPoster(poster);
                         video.setTitle(title);
                         video.setActive(active);
                         video.setDescription(description);
