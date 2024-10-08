@@ -9,7 +9,7 @@ public interface IVideoService {
 
         void update(Video video);
 
-        void delete(int videoid) throws Exception;
+        void delete(String videoid) throws Exception;
 
         Video findById(int videoid);
 

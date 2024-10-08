@@ -42,6 +42,7 @@
         <th>Decription</th>
         <th>Views</th>
         <th>Active</th>
+        <th>Action</th>
     </tr>
     <c:forEach items="${listvideo}" var="video" varStatus="STT" >
         <tr class="odd gradeX">
@@ -51,6 +52,9 @@
             <td>${video.description}</td>
             <td>${video.views}</td>
             <td>${video.active}</td>
+            <td><a href="<c:url value='/admin/video/edit?videoid=${video.videoId}'/>" class="center">Sửa</a>
+                <a href="<c:url value='/admin/video/delete?videoid=${video.videoId}'/>" class="center">Xóa</a>
+            </td>
         </tr>
     </c:forEach>
 </table>

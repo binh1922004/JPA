@@ -16,7 +16,7 @@ import services.imp.VideoServiceImpl;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet({"/admin/videos", "/admin/video/add", "/admin/video/insert"})
+@WebServlet({"/admin/videos", "/admin/video/add", "/admin/video/insert", "/admin/video/delete"})
 public class VideoController extends HttpServlet {
         IVideoService videoService = new VideoServiceImpl();
 
@@ -46,6 +46,9 @@ public class VideoController extends HttpServlet {
                 }
                 else if (url.contains("add")){
                         req.getRequestDispatcher("/view/admin/video/video-add.jsp").forward(req, resp);
+                }
+                else if (url.contains("delete")){
+                        doPost(req, resp);
                 }
         }
 
@@ -84,5 +87,15 @@ public class VideoController extends HttpServlet {
 
                         resp.sendRedirect(req.getContextPath() + "/admin/videos");
                 }
+                else if (url.contains("delete")){
+                        String videoId = req.getParameter("videoid");
+                        try {
+                                videoService.delete(videoId);
+                        } catch (Exception e) {
+                                throw new RuntimeException(e);
+                        }
+                        resp.sendRedirect(req.getContextPath() + "/admin/videos");
+                }
+
         }
 }
