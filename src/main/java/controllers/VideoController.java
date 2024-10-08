@@ -1,23 +1,25 @@
 package controllers;
 
-import com.mysql.cj.xdevapi.Session;
 import entity.Video;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import services.ICategoryService;
 import services.IVideoService;
 import services.imp.CategoryServiceImpl;
 import services.imp.VideoServiceImpl;
+import ultils.Constant;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet({"/admin/videos", "/admin/video/add", "/admin/video/insert", "/admin/video/delete",
 "/admin/video/edit", "/admin/video/update"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50)
 public class VideoController extends HttpServlet {
         IVideoService videoService = new VideoServiceImpl();
 
@@ -76,15 +78,38 @@ public class VideoController extends HttpServlet {
                         int categoryId = (int) session.getAttribute("categoryId");
                         String videoId = req.getParameter("videoId");
                         String title = req.getParameter("title");
-                        String poster = req.getParameter("poster");
                         String description = req.getParameter("description");
                         int views = Integer.parseInt(req.getParameter("views"));
                         int active = Integer.parseInt(req.getParameter("active"));
 
 
+                        String poster = req.getParameter("poster");
+
+                        Part part = req.getPart("poster1");
+                        String fname = getFileName(part);
+                        String uploadPath = Constant.DEFAULT_FILENAME;
+                        File uploadDir = new File(uploadPath);
+
+                        System.out.println(fname);
+                        if (!uploadDir.exists())
+                                uploadDir.mkdirs();
+                        try{
+                                if (part.getSize() > 0){
+                                        part.write(uploadPath + fname);
+                                        video.setPoster(fname);
+                                }
+                                else if (!poster.isEmpty()){
+                                        video.setPoster(poster);
+                                }
+                                else
+                                        video.setPoster("avatar.png");
+                        }
+                        catch (Exception e){
+                                throw new RuntimeException(e);
+                        }
+
                         video.setVideoId(videoId);
                         video.setViews(views);
-                        video.setPoster(poster);
                         video.setTitle(title);
                         video.setActive(active);
                         video.setDescription(description);
@@ -110,11 +135,33 @@ public class VideoController extends HttpServlet {
                         int categoryId = (int) session.getAttribute("categoryId");
                         String videoId = req.getParameter("videoId");
                         String title = req.getParameter("title");
-                        String poster = req.getParameter("poster");
                         String description = req.getParameter("description");
                         int views = Integer.parseInt(req.getParameter("views"));
                         int active = Integer.parseInt(req.getParameter("active"));
 
+                        String poster = req.getParameter("poster");
+
+                        Part part = req.getPart("poster1");
+                        String fname = getFileName(part);
+                        String uploadPath = Constant.DEFAULT_FILENAME;
+                        File uploadDir = new File(uploadPath);
+
+                        if (!uploadDir.exists())
+                                uploadDir.mkdirs();
+                        try{
+                                if (part.getSize() > 0){
+                                        part.write(uploadPath + fname);
+                                        video.setPoster(fname);
+                                }
+                                else if (!poster.isEmpty()){
+                                        video.setPoster(poster);
+                                }
+                                else
+                                        video.setPoster("avatar.png");
+                        }
+                        catch (Exception e){
+                                throw new RuntimeException(e);
+                        }
 
                         video.setVideoId(videoId);
                         video.setViews(views);
@@ -128,6 +175,13 @@ public class VideoController extends HttpServlet {
 
                         resp.sendRedirect(req.getContextPath() + "/admin/videos");
                 }
-
+        }
+        private String getFileName(Part part) {
+                for (String content : part.getHeader("content-disposition").split(";")) {
+                        if (content.trim().startsWith("filename"))
+                                return content.substring(content.indexOf("=") + 2,
+                                        content.length() - 1);
+                }
+                return Constant.DEFAULT_FILENAME;
         }
 }

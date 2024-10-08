@@ -13,15 +13,17 @@
 </head>
 <body>
 <h1>Video Information</h1>
-<form action="<c:url value="/admin/video/insert"/>" method="post">
+<form action="<c:url value="/admin/video/insert"/>" method="post" enctype="multipart/form-data">
     <label for="videoId">Video ID:</label>
     <input type="text" id="videoId" name="videoId"><br>
 
     <label for="title">Title:</label>
     <input type="text" id="title" name="title"><br>
-
-    <label for="poster">Poster:</label>
+    <label for="poster">Link poster</label><br>
     <input type="text" id="poster" name="poster"><br>
+
+    <label for="poster1">Upload poster</label><br>
+    <input type="file" id="poster1" name="poster1" ><br>
 
     <label for="description">Description:</label>
     <textarea id="description" name="description"></textarea><br>

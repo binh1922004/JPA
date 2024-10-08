@@ -48,7 +48,15 @@
         <tr class="odd gradeX">
             <td>${STT.index+1 }</td>
             <td>${video.title}</td>
-            <td>${video.poster}</td>
+
+            <c:if test="${video.poster.substring(0,5) == 'https'}">
+                <c:url value="${video.poster}" var="imgUrl"></c:url>
+            </c:if>
+            <c:if test="${video.poster.substring(0,5) != 'https'}">
+                <c:url value="/image?fname=${video.poster}" var="imgUrl"></c:url>
+            </c:if>
+            <td><img height="150" width="200" src="${imgUrl}" /></td>
+
             <td>${video.description}</td>
             <td>${video.views}</td>
             <td>${video.active}</td>
