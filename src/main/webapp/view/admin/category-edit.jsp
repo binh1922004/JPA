@@ -37,7 +37,7 @@
     <input type="radio" id="statusoff" name="status" value="0" ${cate.status==0?'checked' : ''}>
     <label for="statuson">Khong hoat dong</label>
     <br>
-    <input type="submit" value="Insert">
+    <input type="submit" value="Update">
 </form>
 
 </body>

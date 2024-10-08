@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet({"/admin/categories", "/admin/category/add", "/admin/category/insert",
-        "/admin/category/edit", "/admin/category/update"})
+        "/admin/category/edit", "/admin/category/update", "/admin/category/delete"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50)
@@ -48,6 +48,9 @@ public class CategoryController extends HttpServlet {
 
                         req.setAttribute("cate", cateModel);
                         req.getRequestDispatcher("/view/admin/category-edit.jsp").forward(req, resp);
+                }
+                else if (url.contains("delete")){
+                        doPost(req, resp);
                 }
         }
 
@@ -122,6 +125,15 @@ public class CategoryController extends HttpServlet {
                         }
                         //inesrt
                         categoryService.update(categoryModel);
+                        resp.sendRedirect(req.getContextPath() + "/admin/categories");
+                }
+                else if (url.contains("delete")){
+                        int id = Integer.parseInt(req.getParameter("id"));
+                        try {
+                                categoryService.delete(id);
+                        } catch (Exception e) {
+                                throw new RuntimeException(e);
+                        }
                         resp.sendRedirect(req.getContextPath() + "/admin/categories");
                 }
         }
