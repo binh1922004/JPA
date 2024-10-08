@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet({"/admin/categories", "/admin/category/add", "/admin/category/insert",
-        "/admin/category/edit"})
+        "/admin/category/edit", "/admin/category/update"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50)
@@ -122,6 +122,7 @@ public class CategoryController extends HttpServlet {
                         }
                         //inesrt
                         categoryService.update(categoryModel);
+                        resp.sendRedirect(req.getContextPath() + "/admin/categories");
                 }
         }
         private String getFileName(Part part) {
